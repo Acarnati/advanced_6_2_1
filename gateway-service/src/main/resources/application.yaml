@@ -1,0 +1,20 @@
+server:
+  port: ${PORT:8765}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: config-client
+          uri: lb://config-client
+          predicates:
+            - Path=/api/spring-cloud-course/**
+          filters:
+            - RewritePath=/api/spring-cloud-course/(?<segment>.*),/api/$\{segment}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
